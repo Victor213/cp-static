@@ -1,3 +1,6 @@
+#TODO redirect from HTTP to HTTPS
+#Ensure secure.cloudfordev.com
+
 <Files .htaccess>
 	order allow,deny
 	deny from all

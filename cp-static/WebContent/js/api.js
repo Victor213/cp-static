@@ -1,7 +1,15 @@
-function User() {
-	var id=0, fName='', lName='', password='';
-}
+var AuthModel = Backbone.Model.extend({
+	urlRoot: '/auth',
+	defaults: {
+		email: '',
+	}
+});
 
-function Site() {
-	var id=0, description='', url='';
-}
+var UserModel = Backbone.Model.extend({
+	urlRoot: '/user',
+	defaults: {
+		email: '',
+		password: ''
+	}
+});
+

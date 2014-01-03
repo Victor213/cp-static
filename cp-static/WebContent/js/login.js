@@ -3,17 +3,6 @@
 $(document).ready(function () {
 	
 	$(document).foundation();  
-
-	$("#loginForm").validate({
-		rules: {
-			email: { required: true, minlength: 6, maxlength: 40 },
-			password: { required: true, minlength: 8, maxlength: 40 }
-		},
-		messages: { 
-			email: { required: "Please enter an email address", minlength: "Email address must be at least 6 characters long" },
-			password: { required: "Please enter a password", minlength: "Password must be at least 8 characters long" }
-		}
-	});
    
 	$("#registerForm").validate({	
 		rules: {
@@ -44,7 +33,53 @@ $(document).ready(function () {
 	});
 	
 	$('#loginButton').click(function() {
-	    $("#loginForm").submit();
+		var loginValidator;
+
+		loginValidator = $('#loginForm').validate({
+        	rules: {
+    			email: { required: true, minlength: 6, maxlength: 40 },
+    			password: { required: true, minlength: 8, maxlength: 40 }
+    		},
+    		messages: { 
+    			email: { required: "Please enter an email address", minlength: "Email address must be at least 6 characters long" },
+    			password: { required: "Please enter a password", minlength: "Password must be at least 8 characters long" }
+    		}
+        });
+
+        if (!loginValidator.form()) {
+            return;
+        }
+        
+        var clearTextAuthString = $('#email') + ':' + $('#password');
+        var base64Hash = window.btoa(clearTextAuthString);
+        var authKey = 'Basic ' + base64Hash;
+        
+        var oldBackboneSync = Backbone.sync;
+        Backbone.sync = function( method, model, options ) {
+            options.beforeSend = xhr.setRequestHeader('Authorization' , authKey);
+            return oldBackboneSync.apply(this, [method, model, options]);
+        };
+        
+        //var auth = new AuthModel();
+        var auth = new Backbone.Model({
+        	  email: $('#email')
+    	});
+
+        auth.save();
+        
+        /*
+         * Registration, send password clear text to server.  store as salted pbkdf2, bcrypt or scrypt hash
+         */
+        
+        /*
+         * Attempt to authenticate:
+         * javascript takes user id and pwd and sends an 
+         */
+        
+        /*
+         * All API calls should include a one time unix epoch timestamp nonce.  Server refutes any nonce within 60 seconds of server time.
+         */
+	    
 	});
 	
 	$('#email').keyup(function (e) {

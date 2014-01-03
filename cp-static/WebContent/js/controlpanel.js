@@ -1,8 +1,7 @@
 var CFD = function () {	
 	var config = {
 			application: {
-				movieWidth:400,
-				movieHeight:300
+				serverURL: 'http://localhost:8080'
 			},
 			DIVs: {
 				aNetMessage: 'aMsg',
