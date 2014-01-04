@@ -1,39 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <title>Cloud For Dev, LLC </title>
-        <link rel="shortcut icon" href="/images/favicon.ico" />
-        <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-        <link rel="stylesheet" type="text/css" href="/css/foundation.min.css" />
-        <link rel="stylesheet" type="text/css" href="/css/login.css">
-        <script type="text/javascript" src="/js/modernizr.js"></script>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width" />
+	<title>Cloud For Dev, LLC </title>
+	<link rel="shortcut icon" href="/images/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="/css/foundation.min.css" />
+	<link rel="stylesheet" type="text/css" href="/css/login.css">
+	<script type="text/javascript" src="/js/modernizr.js"></script>
 </head>
 <body>
 
-        <div class="row" style="height: 150px;">&nbsp;</div>
-
-        <div class="row">
-                <div class="radius panel large-6 small-6 columns small-centered large-centered">
-                        <div><h2>Cloud For Dev</h2></div>
-                        <div id="loginMessage" class="loginError"></div>
-						<form id="loginForm" name="loginForm" onsubmit="return false;">
-							<label for="email">Email:</label>
-							<input id="email" name="email" type="text" value=""/>
-							<label for="password">Password:</label>
-							<input id="password" name="password" type="password" value=""/>
-						</form>
-                        
-                        <div class="row">
-                                <div class="large-12 small-12 columns" style="text-align: right;">
-                                        <a href="/do/register"><button class="tiny button" style="margin-right: 5px;">Register</button></a>
-                                        <a href="/do/getpwd"><button class="tiny button" style="margin-right: 5px;">Reset</button></a>
-                                        <button id="loginButton" class="small success button">Login</button>
-                                </div>
-                        </div>
-                </div>
-        </div>
+	<div class="row" style="height: 150px;">&nbsp;</div>
+	
+	<div class="row">
+		<div class="radius panel large-6 small-6 columns small-centered large-centered">
+			<div><h2>Cloud For Dev</h2></div>
+			<div id="loginMessage" class="loginError"></div>
+			<form id="loginForm" name="loginForm" onsubmit="return false;" data-abide>
+				<div class="row">
+					<div class="large-12 small-12 columns">
+						<label for="email">Email</label>
+						<input type="text" id="email" name="email" size="20" maxlength="40" required pattern="email">
+						<small class="error">Please enter a valid email address</small>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-12 small-12 columns">
+						<label for="password">Password</label>
+						<input type="password" id="password" name="password" size="20" maxlength="40" required pattern="password">
+						<small class="error">Please enter a valid password</small>
+					</div>
+				</div>
+			</form>
+                  
+          	<div class="row">
+				<div class="large-12 small-12 columns" style="text-align: right;">
+					<button class="tiny button" style="margin-right: 5px;" data-reveal-id="registrationModal">Register</button>
+					<button id="resetButton" class="tiny button" style="margin-right: 5px;">Reset</button>
+					<button id="loginButton" class="small success button">Login</button>
+				</div>
+         	</div>
+         </div>
+	 </div>
+	 
+	 <div id="registrationModal" class="small reveal-modal" data-reveal>
+		 <div class="row">
+			<div class="radius panel large-12 small-12 columns">
+				<div><h3>Welcome to Cloud For Dev</h3></div>
+				<div id="registrationMessage" class="registerError"></div>
+				
+				<form id="registerForm" name="registerForm" action="/do/processRegistration" method="post" data-abide>
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<label for="regEmail">Email</label>
+							<input type="text" id="regEmail" name="regEmail" size="20" maxlength="40" required pattern="email">
+							<small class="error">Please enter a valid email address</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<label for="regPassword">Password</label>
+							<input type="password" id="regPassword" name="regPassword" size="20" maxlength="40" required pattern="password">
+							<small class="error">Passwords must be at least 8 characters with 1 capital letter, 1 number, and one special character.</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<label for="regConfirm">Confirm Password</label>
+							<input type="password" id="regConfirm" name="regConfirm" size="20" maxlength="40" required data-equalto="regPassword">
+							<small class="error">Passwords do not match</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<label for="regFname">First Name</label>
+							<input type="text" id="regFname" name="regFname" size="20" maxlength="40" required pattern="alpha">
+							<small class="error">Please enter your first name - alphabets only</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<label for="regLname">Last Name</label>
+							<input type="text" id="regLname" name="regLname" size="20" maxlength="40" required pattern="alpha">
+							<small class="error">Please enter your last name - alphabets only</small>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-12 small-12 columns">
+							<label for="regHeardHow">How did you hear about us?</label>
+							<select id="regHeardHow" name="regHeardHow">
+								<option value="8">Forgot</option><option value="6">CFD Representative</option><option value="1">Coworker</option><option value="3">Facebook</option><option value="2">Friend</option><option value="7">Invitation</option><option value="5">Other Website</option><option value="4">Youtube</option>
+							</select>
+						</div>	
+					</div>
+				</form>
+				
+				<div class="row">
+					<div class="large-offset-6 small-offset-6 large-6 small-6 columns" style="text-align: right;">
+						<button id="registerButton" class="small success button" style="margin-left: 5px;">Register</button>
+					</div>
+				</div> 
+			</div>
+		</div>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
         
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="/js/jquery-2.0.3.min.js">\x3C/script>');</script>
@@ -42,6 +114,7 @@
     <script type="text/javascript" src="/js/foundation.min.js"></script>
     <script type="text/javascript" src="/js/underscore-min.js"></script>
     <script type="text/javascript" src="/js/backbone-min.js"></script>
-    <script type="text/javascript" src="/js/login.js"></script>
+    <script type="text/javascript" src="/js/cfd.js"></script>
+    <script type="text/javascript" src="/js/cfd.login.js"></script>
 </body>
 </html>

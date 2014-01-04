@@ -1,4 +1,4 @@
-var CFD = function () {	
+cfd.cp = function () {	
 	var config = {
 			application: {
 				serverURL: 'http://localhost:8080'
@@ -131,43 +131,6 @@ var CFD = function () {
 		clearFields();		
 	}
 	
-	function resetPassword () {
-		var passwordResetValidator, userObject;
-		passwordResetValidator = $("#passwordResetForm").validate({	
-			rules: {
-				password: { required: true, minlength: 8, maxlength: 40, remote: { url: "/ajax/isPasswordOK", data: { product: function () { 
-					return $("#password").val(); 
-				} } } },
-				confirmPassword: { required: true, equalTo: "#password" }
-			}, 
-			messages: { 
-				password: { required: "Please enter a password", minlength: "Password must be at least 8 characters long", remote: "Password should contain: <li>At least one upper case character <li>At least one lower case character <li>At least one number <li>And may not contain any of the following: \\;-\")(&*='|$" },
-				confirmPassword: { required: "Please confirm your password", equalTo: "The passwords do not match" }
-			}, 
-			onkeyup: false
-		});
-	
-		if (passwordResetValidator.form()) {
-			userObject = new User();
-			userObject.password = $("#password").val();
-	
-			$.ajax({
-				type: "POST",
-				url: "/ajax/rest/user/reset/password/",
-				dataType: "json",
-				data: JSON.stringify(userObject),
-				success: function (response) {
-					if (response !== null) {
-						notifyUser('Success', 'Password changed');
-					} else {
-						notifyUser('Error', 'Password change failed');
-					}
-				},
-				error: ajaxErrorHandler
-			});
-		}
-	}
-	
 	return {
 		config: config,
 		init: init,
@@ -186,15 +149,15 @@ $(document).ready(function () {
 	 * expdate:/(0[1-9]|1[012])-(19|20)\d\d/
 	 */
 
-	CFD.init();
+	cfdCp.init();
 	
 	$('.modalLink').click(function (e) {
-		CFD.stopLink(e);
+		cfdCp.stopLink(e);
 		$('#modal_' + e.target.id.slice(10)).foundation('reveal', 'open');
 	});
 	
 	$('.helpLink').click(function (e) {
-		CFD.stopLink(e);
-		$('#' + CFD.config.DIVs.helpDisplay).html('<br />' + $('#helpContents_' + e.target.id.slice(9)).html());
+		cfdCp.stopLink(e);
+		$('#' + cfdCp.config.DIVs.helpDisplay).html('<br />' + $('#helpContents_' + e.target.id.slice(9)).html());
 	});
 });
