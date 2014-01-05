@@ -4,21 +4,17 @@ var cfd = function () {
 	};
 	
 	function init(authString) {
-		var authHash = window.btoa(authString),
-			oldBackboneSync = Backbone.sync;
+		var authHash = window.btoa(authString);
 		
-		sendAuthentication = function (xhr) {
-			xhr.setRequestHeader('Authorization', ("Basic " + authHash));
-		};
-
-		Backbone.sync = function( method, model, options ) {
-		    options.beforeSend = sendAuthentication;
-		    return oldBackboneSync.apply(this, [method, model, options]);
-		};
+		$.ajaxSetup({
+			headers: {
+				Authorization: 'Basic ' + authHash
+			}
+		});
 	}
 	
 	var RegistrationModel = Backbone.Model.extend({
-		urlRoot: config.serverURL,
+		url: config.serverURL,
 		defaults: {
 			regFname: '',
 			regLname: '',
@@ -27,9 +23,9 @@ var cfd = function () {
 	});
 	
 	var AuthModel = Backbone.Model.extend({
-		urlRoot: config.serverURL,
+		url: config.serverURL,
 		defaults: {
-			email: ''
+			action: ''
 		}
 	});
 	
