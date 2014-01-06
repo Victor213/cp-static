@@ -47,8 +47,24 @@ cfd.login = function () {
         model.save();	
 	}
 	
+	function testREST() {
+		var model;
+		cfd.init($('#email').val() + ':');
+		
+		model = new cfd.UserModel({
+			email: 'test@example.com',
+			fName: 'Test',
+			lName: 'Dude',
+			heardHow: 21,
+			isDeleted: 0
+		});
+
+		model.save();
+	}
+	
 	return {
 		loginClick: loginClick,
+		testREST: testREST,
 		registerClick: registerClick,
 		resetClick: resetClick
 	};
@@ -74,5 +90,6 @@ $(document).ready(function () {
 	
 	$('#registerButton').click(cfd.login.registerClick);
 	
-	$('#resetButton').click(cfd.login.resetClick);
+	//$('#resetButton').click(cfd.login.resetClick);
+	$('#resetButton').click(cfd.login.testREST);
 });

@@ -28,8 +28,8 @@ cfd.cp = function () {
 		}
 		
 		// Others
-		if (e.preventDefault) {
-			e.preventDefault();
+		if (e.defaultPrevented) {
+			e.defaultPrevented();
 		}
 	}
 	

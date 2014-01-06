@@ -1,6 +1,6 @@
 var cfd = function () {	
 	var config = {
-		serverURL: 'http://localhost:8080'
+		serverURL: 'http://localhost/app'
 	};
 	
 	function init(authString) {
@@ -14,7 +14,7 @@ var cfd = function () {
 	}
 	
 	var RegistrationModel = Backbone.Model.extend({
-		url: config.serverURL,
+		url: config.serverURL + '/reg',
 		defaults: {
 			regFname: '',
 			regLname: '',
@@ -23,15 +23,27 @@ var cfd = function () {
 	});
 	
 	var AuthModel = Backbone.Model.extend({
-		url: config.serverURL,
+		url: config.serverURL + '/auth',
 		defaults: {
 			action: ''
+		}
+	});
+	
+	var UserModel = Backbone.Model.extend({
+		url: config.serverURL + '/user',
+		defaults: {
+			email: '',
+			fName: '',
+			lName: '',
+			heardHow: 0,
+			isDeleted: 0
 		}
 	});
 	
 	return {
 		AuthModel: AuthModel,
 		RegistrationModel: RegistrationModel,
+		UserModel: UserModel,
 		config: config,
 		init: init
 	};
