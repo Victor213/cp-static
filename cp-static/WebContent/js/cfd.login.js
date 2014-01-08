@@ -11,7 +11,22 @@
  * All API calls should include a one time unix epoch timestamp nonce.  Server refutes any nonce within 60 seconds of server time.
  */
 
-cfd.login = function () {			
+cfd.login = function () {	
+	var config = {
+			authResource: ''
+		};
+	
+	function discoverSuccess() {
+		
+	}
+	
+	function discoverAPI() {
+		$.post(	cfd.config.serverURL, discoverSuccess, 'json' )
+			.fail(function() {
+				alert( "error" );
+			});
+	}
+	
 	function loginClick() {  
 		var model;
         cfd.init($('#email').val() + ':' + $('#password').val());
@@ -51,6 +66,9 @@ cfd.login = function () {
 		var model;
 		cfd.init($('#email').val() + ':');
 		
+		/*
+		 * POST, create
+
 		model = new cfd.UserModel({
 			email: 'test@example.com',
 			fName: 'Test',
@@ -60,9 +78,14 @@ cfd.login = function () {
 		});
 
 		model.save();
+		*/
+		model = new cfd.UserModel({ id: 1 });
+		model.fetch();
+		console.log(model.email);
 	}
 	
 	return {
+		discoverAPI: discoverAPI,
 		loginClick: loginClick,
 		testREST: testREST,
 		registerClick: registerClick,
@@ -72,7 +95,9 @@ cfd.login = function () {
 
 $(document).ready(function () {
 	
-	$(document).foundation();  
+	$(document).foundation(); 
+	
+	cfd.login.discoverAPI();
 	
 	$('#email').keyup(function (e) {
 	    if (e.keyCode == 13) {
