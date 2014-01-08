@@ -1,51 +1,74 @@
 var cfd = function () {	
 	var config = {
-		serverURL: 'http://localhost/app'
+		serverURL: 'http://localhost/app/',
+		authHref: ''
+	}, 
+	models = {
+		auth: ''
 	};
 	
-	function init(authString) {
-		var authHash = window.btoa(authString);
+
+	function init() {
+		var token, authHash;
+		
+		token = readCookie('cfdToken');
+		
+		// Client is not authenticated
+		if (token === null) {
+			
+		} else {
+			
+		}
+		
+		authHash = window.btoa();
 		
 		$.ajaxSetup({
 			headers: {
 				Authorization: 'Basic ' + authHash
 			}
 		});
+		
+		$.get(config.serverURL, discoverSuccess, 'json');		
 	}
 	
-	var RegistrationModel = Backbone.Model.extend({
-		url: config.serverURL + '/reg',
-		defaults: {
-			regFname: '',
-			regLname: '',
-			regHeardHow: 0
+	function discoverSuccess(rsp) { 
+		for (var i = 0; i<rsp.links.length; i++) {
+			var link = rsp.links[i];
+			if (link.rel === 'authentication') {
+				config.authHref = link.href;				
+				models.auth = Backbone.Model.extend({
+					urlRoot: config.authHref,
+					defaults: {
+						action: ''
+					}
+				});
+			}
 		}
-	});
+	}
 	
-	var AuthModel = Backbone.Model.extend({
-		url: config.serverURL + '/auth',
-		defaults: {
-			action: ''
+	function createCookie(name,value,hours) {
+		var date, expires = '';
+		if (hours) {
+			date = new Date();
+			date.setTime(date.getTime()+(hours*60*60*1000));
+			expires = "; expires="+date.toGMTString();
 		}
-	});
+		document.cookie = name+"="+value+expires+"; path=/";
+	}
 	
-	var UserModel = Backbone.Model.extend({
-		url: config.serverURL + '/user',
-		defaults: {
-			email: '',
-			fName: '',
-			lName: '',
-			heardHow: 0,
-			isDeleted: 0
+	function readCookie(name) {
+		var nameEQ = name + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0;i < ca.length;i++) {
+			var c = ca[i];
+			while (c.charAt(0)==' ') c = c.substring(1,c.length);
+			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 		}
-	});
+		return null;
+	}
 	
 	return {
-		AuthModel: AuthModel,
-		RegistrationModel: RegistrationModel,
-		UserModel: UserModel,
-		config: config,
+		models: models,
 		init: init
 	};
 }();
-

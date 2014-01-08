@@ -11,85 +11,17 @@
  * All API calls should include a one time unix epoch timestamp nonce.  Server refutes any nonce within 60 seconds of server time.
  */
 
-cfd.login = function () {	
-	var config = {
-			authResource: ''
-		};
-	
-	function discoverSuccess() {
-		
-	}
-	
-	function discoverAPI() {
-		$.post(	cfd.config.serverURL, discoverSuccess, 'json' )
-			.fail(function() {
-				alert( "error" );
-			});
-	}
-	
-	function loginClick() {  
-		var model;
-        cfd.init($('#email').val() + ':' + $('#password').val());
-        
-        model = new cfd.AuthModel({
+cfd.login = function () {		
+	function login() {  
+		var model = new cfd.models.auth({
         	action: 'login'
 		});
         
         model.save();		    
 	}		
 	
-	function registerClick() {
-		var model;
-		cfd.init($('#regEmail').val() + ':' + $('#regPassword').val());
-		
-		model = new cfd.RegistrationModel({
-			regFname: $('#regFname').val(),
-			regLname: $('#regLname').val(),
-			regHeardHow: $('#regHeardHow').val()
-		});
-
-		model.save();
-	}
-	
-	function resetClick() {  
-		var model;
-		cfd.init($('#email').val() + ':');
-		
-		model = new cfd.AuthModel({
-        	action: 'reset'
-		});
-
-        model.save();	
-	}
-	
-	function testREST() {
-		var model;
-		cfd.init($('#email').val() + ':');
-		
-		/*
-		 * POST, create
-
-		model = new cfd.UserModel({
-			email: 'test@example.com',
-			fName: 'Test',
-			lName: 'Dude',
-			heardHow: 21,
-			isDeleted: 0
-		});
-
-		model.save();
-		*/
-		model = new cfd.UserModel({ id: 1 });
-		model.fetch();
-		console.log(model.email);
-	}
-	
 	return {
-		discoverAPI: discoverAPI,
-		loginClick: loginClick,
-		testREST: testREST,
-		registerClick: registerClick,
-		resetClick: resetClick
+		login: login
 	};
 }();
 
@@ -97,7 +29,7 @@ $(document).ready(function () {
 	
 	$(document).foundation(); 
 	
-	cfd.login.discoverAPI();
+	cfd.init();
 	
 	$('#email').keyup(function (e) {
 	    if (e.keyCode == 13) {
@@ -111,10 +43,9 @@ $(document).ready(function () {
 	    }
 	});
    	
-	$('#loginButton').click(cfd.login.loginClick);
+	$('#loginButton').click(cfd.login.login);
 	
-	$('#registerButton').click(cfd.login.registerClick);
+	//$('#registerButton').click(cfd.login.registerClick);
 	
 	//$('#resetButton').click(cfd.login.resetClick);
-	$('#resetButton').click(cfd.login.testREST);
 });
