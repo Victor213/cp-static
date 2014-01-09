@@ -43,10 +43,11 @@ cfd.login = function () {
 		addBasicAuth(window.btoa($('#email').val() + ':' + $('#password').val()));
 	
 		model = new cfd.models.auth({
-			action: 'login'
+			token: '',
+			expires: ''
 		});
 		
-        model.save(null, { 
+        model.fetch(null, { 
 			success: function(model, response, options) {
 				alert('You logged in!');
 			},
@@ -76,13 +77,15 @@ cfd.login = function () {
 		
 		addBasicAuth(window.btoa($('#regEmail').val() + ':' + $('#regPassword').val()));
 		
-		model = new cfd.models.reg({
-			action: 'register'
+		model = new cfd.models.user({
+			fName: $('#regFname'),
+			lName: $('#regLname'),
+			heardHow: $('#regHeardHow')
 		});
 		
 		model.save(null, { 
 			success: function(model, response, options) {
-				alert('You logged in!');
+				alert('You registered!');
 			},
 			error: function(model, xhr, options) { 
 				$regMsgDiv.html(config.regFailMsg);
@@ -101,6 +104,7 @@ $(document).ready(function () {
 	$(document).foundation(); 
 	
 	cfd.init();
+	cfd.logout();
 	
 	$('#email').keyup(function (e) {
 		if (e.keyCode == 13) {

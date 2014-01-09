@@ -4,20 +4,21 @@ var cfd = function () {
 		authToken: ''
 	}, 
 	models = {
-		auth: '', 
+		token: '', 
 		reg: ''
 	},
-	authToken, 
 	isInitOk = false;
 
 	function init() {
-		var token;
+		var storedToken;
 		
-		token = readCookie('cfdToken');
+		storedToken = readCookie('cfdToken');
 		
-		// Client is not authenticated
-		if (token !== null) {
-			authToken = token;
+		// If the client has an existing cookie
+		if (storedToken !== null) {			
+			// Read the cookie and populate the token model
+			// Test that this token model is still good by POSTing it to the server and seeing if it gets a 200
+			// If fail, blank the token model
 		}
 		
 		/*
@@ -31,17 +32,23 @@ var cfd = function () {
 		for (var i = 0; i<rsp.links.length; i++) {
 			var link = rsp.links[i];
 
-			if (link.rel === 'authentication') {
-				models.auth = Backbone.Model.extend({ urlRoot: link.href });
+			if (link.rel === 'token') {
+				models.token = Backbone.Model.extend({ urlRoot: link.href });
 			}
 			
-			if (link.rel === 'registration') {			
-				models.reg = Backbone.Model.extend({ urlRoot: link.href });
+			if (link.rel === 'user') {			
+				models.user = Backbone.Model.extend({ urlRoot: link.href });
 			}
 			
 		}
 		
 		isInitOk = true;
+	}
+	
+	function logout() {
+		// assert init is done
+		// DELETE token model
+		// if OK, delete cookie
 	}
 	
 	function createCookie(name,value,hours) {
@@ -89,6 +96,7 @@ var cfd = function () {
 		init: init,
 		models: models,
 		assertInitOk: assertInitOk,
-		assertFormOk: assertFormOk		
+		assertFormOk: assertFormOk,
+		logout: logout
 	};
 }();
