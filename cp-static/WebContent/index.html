@@ -7,8 +7,14 @@
 	<link rel="shortcut icon" href="/images/favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="/css/normalize.css" />
 	<link rel="stylesheet" type="text/css" href="/css/foundation.min.css" />
-	<link rel="stylesheet" type="text/css" href="/css/login.css">
 	<script type="text/javascript" src="/js/modernizr.js"></script>
+	<style type="text/css">
+		.errMsg {
+			text-align: center;
+			color: #F04124;
+			padding-bottom: 20px;
+		}
+	</style>
 </head>
 <body>
 
@@ -17,7 +23,7 @@
 	<div class="row">
 		<div class="radius panel large-6 small-6 columns small-centered large-centered">
 			<div><h2>Cloud For Dev</h2></div>
-			<div id="loginMessage" class="loginError"></div>
+			<div id="loginMessage" class="errMsg"></div>
 			<form id="loginForm" name="loginForm" onsubmit="return false;" data-abide>
 				<div class="row">
 					<div class="large-12 small-12 columns">
@@ -49,9 +55,9 @@
 		 <div class="row">
 			<div class="radius panel large-12 small-12 columns">
 				<div><h3>Welcome to Cloud For Dev</h3></div>
-				<div id="registrationMessage" class="registerError"></div>
+				<div id="registrationMessage" class="errMsg"></div>
 				
-				<form id="registerForm" name="registerForm" action="/do/processRegistration" method="post" data-abide>
+				<form id="registerForm" name="registerForm" onsubmit="return false;" data-abide>
 					<div class="row">
 						<div class="large-12 small-12 columns">
 							<label for="regEmail">Email</label>

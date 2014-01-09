@@ -1,49 +1,47 @@
 var cfd = function () {	
 	var config = {
 		serverURL: 'http://localhost/app/',
-		authHref: ''
+		authToken: ''
 	}, 
 	models = {
-		auth: ''
-	};
-	
+		auth: '', 
+		reg: ''
+	},
+	authToken, 
+	isInitOk = false;
 
 	function init() {
-		var token, authHash;
+		var token;
 		
 		token = readCookie('cfdToken');
 		
 		// Client is not authenticated
-		if (token === null) {
-			
-		} else {
-			
+		if (token !== null) {
+			authToken = token;
 		}
 		
-		authHash = window.btoa();
-		
-		$.ajaxSetup({
-			headers: {
-				Authorization: 'Basic ' + authHash
-			}
-		});
-		
+		/*
+		 * Must be last statement of init because it's async and initializing=false 
+		 * is in the success callback
+		 */
 		$.get(config.serverURL, discoverSuccess, 'json');		
 	}
-	
+		
 	function discoverSuccess(rsp) { 
 		for (var i = 0; i<rsp.links.length; i++) {
 			var link = rsp.links[i];
+
 			if (link.rel === 'authentication') {
-				config.authHref = link.href;				
-				models.auth = Backbone.Model.extend({
-					urlRoot: config.authHref,
-					defaults: {
-						action: ''
-					}
-				});
+				models.auth = Backbone.Model.extend({ urlRoot: link.href });
 			}
+			
+			if (link.rel === 'registration') {			
+				models.reg = Backbone.Model.extend({ urlRoot: link.href });
+			}
+			
 		}
+		
+		isInitOk = true;
 	}
 	
 	function createCookie(name,value,hours) {
@@ -62,13 +60,35 @@ var cfd = function () {
 		for(var i=0;i < ca.length;i++) {
 			var c = ca[i];
 			while (c.charAt(0)==' ') c = c.substring(1,c.length);
-			if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+			if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
 		}
 		return null;
 	}
 	
+	function assertInitOk() {
+		return isInitOk;
+	}
+	
+	function assertFormOk($form) {
+		validForm = false;
+		
+		$form
+		.on('valid', function () {
+			validForm = true; 
+		})
+		.on('invalid', function () {
+			validForm = false;
+		});
+		
+		$form.submit();
+		
+		return validForm;
+	}
+	
 	return {
+		init: init,
 		models: models,
-		init: init
+		assertInitOk: assertInitOk,
+		assertFormOk: assertFormOk		
 	};
 }();
