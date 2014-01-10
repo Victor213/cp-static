@@ -42,7 +42,7 @@ cfd.login = function () {
 		
 		addBasicAuth(window.btoa($('#email').val() + ':' + $('#password').val()));
 	
-		model = new cfd.models.auth({
+		model = new cfd.models.token({
 			token: '',
 			expires: ''
 		});
@@ -78,9 +78,9 @@ cfd.login = function () {
 		addBasicAuth(window.btoa($('#regEmail').val() + ':' + $('#regPassword').val()));
 		
 		model = new cfd.models.user({
-			fName: $('#regFname'),
-			lName: $('#regLname'),
-			heardHow: $('#regHeardHow')
+			fName: $('#regFname').val(),
+			lName: $('#regLname').val(),
+			heardHow: $('#regHeardHow').val()
 		});
 		
 		model.save(null, { 
