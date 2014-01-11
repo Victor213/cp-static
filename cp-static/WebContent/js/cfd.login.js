@@ -78,6 +78,7 @@ cfd.login = function () {
 		addBasicAuth(window.btoa($('#regEmail').val() + ':' + $('#regPassword').val()));
 		
 		model = new cfd.models.user({
+			email: $('#regEmail').val(),
 			fName: $('#regFname').val(),
 			lName: $('#regLname').val(),
 			heardHow: $('#regHeardHow').val()
