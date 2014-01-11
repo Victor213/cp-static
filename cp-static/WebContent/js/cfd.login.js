@@ -15,7 +15,9 @@ cfd.login = function () {
 	var config = {
 		srvrDownMsg : 'We\'re sorry, the server did not respond. Please try again.',
 		wrongCredsMsg: 'User name or password incorrect',
-		regFailMsg: 'We\'re sorry, registration failed. Please try again.'
+		regFailMsg: 'We\'re sorry, registration failed. Please try again.',
+		resetOkMsg: 'Your password is in your inbox',
+		resetFailMsg: 'We\'re sorry, the password reset failed.  Please try again.'
 	};
 	
 	
@@ -94,9 +96,37 @@ cfd.login = function () {
         }); 
 	}
 	
+	function reset() {
+		var $resetMsgDiv = $('#loginMessage'), model;
+		
+		if (!cfd.assertFormOk($('#registerForm'))) {
+			return;
+		}	
+		
+		if (!cfd.assertInitOk()) {
+			$regMsgDiv.html(config.regFailMsg);
+			cfd.init();
+			return;
+		}
+		
+		model = new cfd.models.reset({
+			email: $('#email').val()
+		});
+		
+		model.save(null, { 
+			success: function(model, response, options) {
+				$resetMsgDiv.html(config.resetOkMsg);
+			},
+			error: function(model, xhr, options) { 
+				$resetMsgDiv.html(config.resetFailMsg);
+			}
+        }); 
+	}
+	
 	return {
 		login: login,
-		register: register
+		register: register,
+		reset: reset
 	};
 }();
 
@@ -123,5 +153,5 @@ $(document).ready(function () {
 	
 	$('#registerButton').click(cfd.login.register);
 	
-	//$('#resetButton').click(cfd.login.resetClick);
+	$('#resetButton').click(cfd.login.reset);
 });

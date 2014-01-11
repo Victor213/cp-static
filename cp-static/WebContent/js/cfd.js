@@ -5,7 +5,8 @@ var cfd = function () {
 	}, 
 	models = {
 		token: '', 
-		reg: ''
+		reg: '',
+		reset: ''
 	},
 	isInitOk = false;
 
@@ -40,6 +41,9 @@ var cfd = function () {
 				models.user = Backbone.Model.extend({ urlRoot: link.href });
 			}
 			
+			if (link.rel === 'reset') {			
+				models.reset = Backbone.Model.extend({ urlRoot: link.href });
+			}
 		}
 		
 		isInitOk = true;
