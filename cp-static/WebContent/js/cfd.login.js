@@ -18,8 +18,7 @@ cfd.login = function () {
 		regFailMsg: 'We\'re sorry, registration failed. Please try again.',
 		resetOkMsg: 'Your password is in your inbox',
 		resetFailMsg: 'We\'re sorry, the password reset failed.  Please try again.'
-	};
-	
+	};	
 	
 	function addBasicAuth(authHash) {
 		$.ajaxSetup({
@@ -72,7 +71,7 @@ cfd.login = function () {
 		}	
 		
 		if (!cfd.assertInitOk()) {
-			$regMsgDiv.html(config.regFailMsg);
+			$regMsgDiv.html(config.srvrDownMsg);
 			cfd.init();
 			return;
 		}
@@ -99,12 +98,12 @@ cfd.login = function () {
 	function reset() {
 		var $resetMsgDiv = $('#loginMessage'), model;
 		
-		if (!cfd.assertFormOk($('#registerForm'))) {
+		if (!cfd.assertFormOk($('#loginForm'))) {
 			return;
 		}	
 		
 		if (!cfd.assertInitOk()) {
-			$regMsgDiv.html(config.regFailMsg);
+			$resetMsgDiv.html(config.srvrDownMsg);
 			cfd.init();
 			return;
 		}
