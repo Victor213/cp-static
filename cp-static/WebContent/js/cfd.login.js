@@ -50,6 +50,7 @@ cfd.login = function () {
 		
         model.fetch(null, { 
 			success: function(model, response, options) {
+				// TODO Complete login token exchange and redirect
 				alert('You logged in!');
 			},
 			error: function(model, xhr, options) { 
@@ -87,7 +88,7 @@ cfd.login = function () {
 		
 		model.save(null, { 
 			success: function(model, response, options) {
-				alert('You registered!');
+				$('#regThankYouModal').foundation('reveal', 'open');
 			},
 			error: function(model, xhr, options) { 
 				$regMsgDiv.html(config.regFailMsg);
